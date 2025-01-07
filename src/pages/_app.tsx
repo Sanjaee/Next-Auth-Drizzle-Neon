@@ -1,6 +1,20 @@
 import "@/styles/globals.css";
+import { SessionProvider } from "next-auth/react";
 import type { AppProps } from "next/app";
+import { useRouter } from "next/router";
+const disableNavbar = ["auth", "admin"];
+export default function App({
+  Component,
+  pageProps: { session, ...pageProps },
+}: AppProps) {
+  const { pathname } = useRouter();
 
-export default function App({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />;
+  return (
+    <>
+      <SessionProvider session={session}>
+        {!disableNavbar.includes(pathname.split("/")[1])}
+        <Component {...pageProps} />
+      </SessionProvider>
+    </>
+  );
 }
