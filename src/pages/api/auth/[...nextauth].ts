@@ -21,19 +21,18 @@ export const authOptions: NextAuthOptions = {
         token.email = user.email;
         token.name = user.name;
       }
-
+    
       if (account?.provider === "google") {
         const data = {
           username: profile.name,
           email: profile.email,
         };
-
-        await loginWithGoogle(data, (data: any) => {
-          token.email = data.email;
-          token.name = data.name;
-        });
+    
+        const user = await loginWithGoogle(data);
+        token.email = user.email;
+        token.name = user.name;
       }
-
+    
       return token;
     },
 
